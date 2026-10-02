@@ -49,6 +49,87 @@
     letter-spacing: 3px;
   }
 
+  /* ---------- 卡池选择 ---------- */
+  .pool-select {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+
+  .pool-tab {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 12px 16px 12px 20px;
+    border-radius: 10px;
+    border: 1px solid rgba(211, 188, 142, .22);
+    background: linear-gradient(160deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .01));
+    color: #a8b4c4;
+    cursor: pointer;
+    transition: .22s;
+    font-family: inherit;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .pool-tab::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: .22s;
+  }
+
+  .pool-tab:hover:not(.active) {
+    border-color: rgba(211, 188, 142, .45);
+    background: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02));
+  }
+
+  .pool-tab.active {
+    border-color: rgba(255, 215, 140, .7);
+    background: linear-gradient(160deg, rgba(255, 200, 100, .13), rgba(255, 200, 100, .03));
+    color: #ffe6b0;
+    box-shadow: 0 0 20px rgba(255, 177, 63, .22);
+  }
+
+  .pool-tab.active::before {
+    background: linear-gradient(180deg, #ff9c2b, #ffd166);
+    box-shadow: 0 0 10px rgba(255, 177, 63, .8);
+  }
+
+  .pool-tab .pt-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffd166;
+    opacity: .7;
+  }
+
+  .pool-tab.active .pt-tag { opacity: 1; }
+
+  .pool-tab .pt-name {
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 2px;
+  }
+
+  .pool-tab .pt-meta {
+    font-size: 11px;
+    color: #7d8a9c;
+    letter-spacing: .5px;
+  }
+
+  .pool-tab.active .pt-meta { color: #b89e6a; }
+  .pool-tab .pt-meta b { color: #c3ccd8; font-weight: 700; }
+  .pool-tab.active .pt-meta b { color: #ffe6b0; }
+
+  .pool-tab.pity-warn .pt-meta b { color: #ffd166; }
+
+  /* ---------- 卡池信息 ---------- */
   .banner {
     display: flex;
     gap: 14px;
@@ -84,6 +165,7 @@
   .b-name { font-size: 14px; color: #ecdfc4; letter-spacing: 1px; }
   .b-name.small { font-size: 12.5px; color: #c4b8d8; }
 
+  /* ---------- 展示区 ---------- */
   .stage {
     position: relative;
     min-height: 340px;
@@ -219,6 +301,7 @@
     color: #0d1420;
   }
 
+  /* ---------- 保底提示 ---------- */
   .guarantee {
     text-align: center;
     font-size: 12.5px;
@@ -239,6 +322,7 @@
     box-shadow: 0 0 16px rgba(255, 177, 63, .2) inset;
   }
 
+  /* ---------- 统计 ---------- */
   .stats {
     display: grid;
     grid-template-columns: repeat(8, 1fr);
@@ -265,6 +349,7 @@
   .stat .v.up { color: #ffd77a; }
   .stat .v.std { color: #a0b4cc; }
 
+  /* ---------- 按钮 ---------- */
   .actions {
     display: flex;
     gap: 12px;
@@ -308,6 +393,7 @@
     border-color: rgba(125, 138, 156, .35);
   }
 
+  /* ---------- 闪光 ---------- */
   .flash {
     position: fixed;
     inset: 0;
@@ -331,18 +417,21 @@
     color: #4e5a6b;
   }
 
+  /* ---------- 响应式 ---------- */
   @media (max-width: 640px) {
     .stats { grid-template-columns: repeat(4, 1fr); }
   }
 
   @media (max-width: 480px) {
     header h1 { font-size: 22px; letter-spacing: 6px; }
+    .pool-tab { padding: 10px 12px 10px 16px; }
+    .pool-tab .pt-name { font-size: 15px; letter-spacing: 1px; }
+    .pool-tab .pt-meta { font-size: 10px; }
     .stage { padding: 14px; gap: 8px; min-height: 300px; }
     .card { width: 72px; height: 114px; }
     .card-name { font-size: 10px; margin-bottom: 5px; }
     .card-star { font-size: 8px; }
     .btn { padding: 11px 20px; font-size: 14px; letter-spacing: 1px; }
-    .stats { grid-template-columns: repeat(4, 1fr); }
     .stat .v { font-size: 13px; }
   }
 </style>
@@ -355,10 +444,25 @@
     <p class="sub">7.1版本 · 往冥府的安魂歌</p>
   </header>
 
+  <!-- 卡池选择 -->
+  <div class="pool-select" id="poolSelect">
+    <button class="pool-tab active" data-pool="wisner">
+      <span class="pt-tag">五星 UP</span>
+      <span class="pt-name">薇斯纳</span>
+      <span class="pt-meta">已抽 <b data-cnt="wisner">0</b> 次</span>
+    </button>
+    <button class="pool-tab" data-pool="voyanissa">
+      <span class="pt-tag">五星 UP</span>
+      <span class="pt-name">沃雅妮莎</span>
+      <span class="pt-meta">已抽 <b data-cnt="voyanissa">0</b> 次</span>
+    </button>
+  </div>
+
+  <!-- 当前卡池信息 -->
   <div class="banner">
     <div class="b-item">
       <span class="b-tag gold">五星 UP</span>
-      <span class="b-name">薇斯纳 · 沃雅妮莎</span>
+      <span class="b-name" id="cur5up">薇斯纳</span>
     </div>
     <div class="b-item">
       <span class="b-tag purple">四星 UP</span>
@@ -366,12 +470,15 @@
     </div>
   </div>
 
+  <!-- 抽卡展示 -->
   <div class="stage" id="stage">
     <p class="hint">点击下方按钮开始祈愿</p>
   </div>
 
+  <!-- 保底提示 -->
   <div class="guarantee" id="guarantee">小保底 · 下次五星有 50% 概率为 UP 角色</div>
 
+  <!-- 统计 -->
   <div class="stats">
     <div class="stat"><span class="k">总抽数</span><span class="v" id="s-total">0</span></div>
     <div class="stat"><span class="k">五星</span><span class="v c5" id="s-5">0</span></div>
@@ -383,15 +490,16 @@
     <div class="stat"><span class="k">保底进度</span><span class="v" id="s-pity">0 / 90</span></div>
   </div>
 
+  <!-- 操作 -->
   <div class="actions">
     <button class="btn" id="pull1">祈愿 ×1</button>
     <button class="btn primary" id="pull10">祈愿 ×10</button>
-    <button class="btn ghost" id="reset">重置</button>
+    <button class="btn ghost" id="reset">重置本池</button>
   </div>
 
   <p class="footnote">
     五星基础概率 0.6%（第 74 抽起递增，90 抽必出）· 四星基础概率 5.1%，10 抽保底<br>
-    本页面仅供娱乐，与官方无关
+    两个卡池共享保底进度与大保底状态 · 本页面仅供娱乐，与官方无关
   </p>
 
 </div>
@@ -401,15 +509,22 @@
   'use strict';
 
   /* ================= 卡池数据 · 7.1版本 ================= */
-  const POOL = {
-    r5up: ['薇斯纳', '沃雅妮莎'],
+
+  // 各 UP 池独有的五星
+  const POOL_INFO = {
+    wisner:    { label: '薇斯纳',   r5up: ['薇斯纳'] },
+    voyanissa: { label: '沃雅妮莎', r5up: ['沃雅妮莎'] }
+  };
+
+  // 两池共用的常驻池内容
+  const SHARED = {
     r5std: ['琴', '迪卢克', '莫娜', '刻晴', '七七', '提纳里', '迪希雅', '梦见月瑞希'],
-    r4up: ['迪奥娜', '重云', '珐露珊'],
+    r4up:  ['迪奥娜', '重云', '珐露珊'],
     r4std: [
-      '安柏', '凯亚', '丽莎', '香菱', '北斗', '行秋', '重云', '诺艾尔', '班尼特',
-      '菲谢尔', '砂糖', '雷泽', '芭芭拉', '罗莎莉亚', '辛焱', '迪奥娜', '烟绯',
+      '安柏', '凯亚', '丽莎', '香菱', '北斗', '行秋', '诺艾尔', '班尼特',
+      '菲谢尔', '砂糖', '雷泽', '芭芭拉', '罗莎莉亚', '辛焱', '烟绯',
       '早柚', '云堇', '鹿野院平藏', '久岐忍', '多莉', '坎蒂丝', '莱依拉', '米卡',
-      '绮良良', '卡维', '珐露珊',
+      '绮良良', '卡维',
       '祭礼剑', '笛剑', '匣里龙吟', '西风剑', '祭礼大剑', '雨裁', '钟剑',
       '西风大剑', '西风长枪', '匣里灭辰', '试作星镰', '弓藏', '绝弦',
       '西风猎弓', '祭礼弓', '祭礼残章', '流浪乐章', '西风秘典'
@@ -423,19 +538,33 @@
   };
 
   /* ================= 状态 ================= */
-  const state = {
-    total: 0,
-    pity5: 0,
-    pity4: 0,
-    guarantee5: false,
-    guarantee4: false,
-    count5: 0,
-    count5up: 0,    // 五星UP计数
-    count5std: 0,   // 五星常驻计数
-    count4: 0,
-    count3: 0
+
+  // 每个池子独立的抽卡统计
+  function newPoolState() {
+    return {
+      total: 0,
+      count5: 0,
+      count5up: 0,
+      count5std: 0,
+      count4: 0,
+      count3: 0
+    };
+  }
+
+  const pools = {
+    wisner: newPoolState(),
+    voyanissa: newPoolState()
   };
 
+  // 共享的保底状态（两个UP池共用）
+  const shared = {
+    pity5: 0,          // 距离上次五星的抽数
+    pity4: 0,          // 距离上次四星的抽数
+    guarantee5: false, // 五星大保底
+    guarantee4: false  // 四星大保底
+  };
+
+  let current = 'wisner';
   let busy = false;
 
   const $ = id => document.getElementById(id);
@@ -443,6 +572,7 @@
 
   /* ================= 抽卡核心 ================= */
 
+  // 五星概率曲线：1~73 抽 0.6%，第 74 抽起每抽 +6%，第 90 抽必出
   function rate5(pity) {
     if (pity >= 90) return 1;
     if (pity <= 73) return 0.006;
@@ -451,51 +581,58 @@
 
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
-  function pullOne() {
-    state.total++;
-    state.pity5++;
-    state.pity4++;
+  /**
+   * 在指定池子中抽一次，使用共享的保底状态
+   * @param {string} poolKey 当前池子的 key
+   */
+  function pullOne(poolKey) {
+    const pool = pools[poolKey];
+    const r5up = POOL_INFO[poolKey].r5up;
 
-    /* --- 五星判定 --- */
-    if (Math.random() < rate5(state.pity5)) {
-      state.pity5 = 0;
-      state.count5++;
+    pool.total++;
+    shared.pity5++;
+    shared.pity4++;
+
+    /* --- 五星判定（基于共享保底进度） --- */
+    if (Math.random() < rate5(shared.pity5)) {
+      shared.pity5 = 0;
+      pool.count5++;
 
       let name, isUp = false;
-      if (state.guarantee5 || Math.random() < 0.5) {
-        name = pick(POOL.r5up);
-        state.guarantee5 = false;
+      if (shared.guarantee5 || Math.random() < 0.5) {
+        name = pick(r5up);          // 中 UP
+        shared.guarantee5 = false;
         isUp = true;
-        state.count5up++;
+        pool.count5up++;
       } else {
-        name = pick(POOL.r5std);
-        state.guarantee5 = true;
-        state.count5std++;
+        name = pick(SHARED.r5std);  // 歪常驻
+        shared.guarantee5 = true;   // 下个五星必为 UP
+        pool.count5std++;
       }
       return { name, rarity: 5, isUp };
     }
 
-    /* --- 四星判定 --- */
-    const p4 = state.pity4 >= 10 ? 1 : 0.051;
+    /* --- 四星判定（基于共享保底进度，10 抽保底） --- */
+    const p4 = shared.pity4 >= 10 ? 1 : 0.051;
     if (Math.random() < p4) {
-      state.pity4 = 0;
-      state.count4++;
+      shared.pity4 = 0;
+      pool.count4++;
 
       let name, isUp = false;
-      if (state.guarantee4 || Math.random() < 0.5) {
-        name = pick(POOL.r4up);
-        state.guarantee4 = false;
+      if (shared.guarantee4 || Math.random() < 0.5) {
+        name = pick(SHARED.r4up);
+        shared.guarantee4 = false;
         isUp = true;
       } else {
-        name = pick(POOL.r4std);
-        state.guarantee4 = true;
+        name = pick(SHARED.r4std);
+        shared.guarantee4 = true;
       }
       return { name, rarity: 4, isUp };
     }
 
     /* --- 三星 --- */
-    state.count3++;
-    return { name: pick(POOL.r3), rarity: 3, isUp: false };
+    pool.count3++;
+    return { name: pick(SHARED.r3), rarity: 3, isUp: false };
   }
 
   /* ================= 渲染 ================= */
@@ -510,7 +647,7 @@
       card.style.animationDelay = (i * 0.08) + 's';
 
       let tag = '';
-      if (item.rarity === 5 && item.isUp) tag = '<span class="up-tag">UP</span>';
+      if (item.rarity === 5 && item.isUp)  tag = '<span class="up-tag">UP</span>';
       if (item.rarity === 5 && !item.isUp) tag = '<span class="std-tag">常驻</span>';
 
       card.innerHTML =
@@ -523,25 +660,44 @@
     stage.appendChild(frag);
   }
 
-  function updateStats() {
-    $('s-total').textContent = state.total;
-    $('s-5').textContent = state.count5;
-    $('s-5up').textContent = state.count5up;
-    $('s-5std').textContent = state.count5std;
-    $('s-4').textContent = state.count4;
-    $('s-3').textContent = state.count3;
-    $('s-rate').textContent =
-      (state.total ? (state.count5 / state.total * 100) : 0).toFixed(2) + '%';
-    $('s-pity').textContent = state.pity5 + ' / 90';
+  // 更新当前池子的全部界面信息
+  function updateUI() {
+    const pool = pools[current];
+    const info = POOL_INFO[current];
+
+    $('cur5up').textContent = info.r5up.join(' · ');
+
+    $('s-total').textContent = pool.total;
+    $('s-5').textContent     = pool.count5;
+    $('s-5up').textContent   = pool.count5up;
+    $('s-5std').textContent  = pool.count5std;
+    $('s-4').textContent     = pool.count4;
+    $('s-3').textContent     = pool.count3;
+    $('s-rate').textContent  =
+      (pool.total ? (pool.count5 / pool.total * 100) : 0).toFixed(2) + '%';
+    $('s-pity').textContent  = shared.pity5 + ' / 90';  // 共享保底进度
 
     const g = $('guarantee');
-    if (state.guarantee5) {
+    if (shared.guarantee5) {
       g.textContent = '大保底 · 下次五星必定为 UP 角色';
       g.classList.add('big');
     } else {
       g.textContent = '小保底 · 下次五星有 50% 概率为 UP 角色';
       g.classList.remove('big');
     }
+
+    updateTabBadges();
+  }
+
+  // 更新标签页上的“已抽 N 次”和保底警告
+  function updateTabBadges() {
+    document.querySelectorAll('[data-cnt]').forEach(el => {
+      const key = el.dataset.cnt;
+      const p = pools[key];
+      el.textContent = p.total;
+      // 保底警告基于共享保底进度
+      el.parentElement.parentElement.classList.toggle('pity-warn', shared.pity5 >= 70);
+    });
   }
 
   function flash() {
@@ -556,6 +712,21 @@
     ['pull1', 'pull10', 'reset'].forEach(id => { $(id).disabled = b; });
   }
 
+  /* ================= 卡池切换 ================= */
+
+  function switchPool(key) {
+    if (busy || key === current || !pools[key]) return;
+
+    current = key;
+
+    document.querySelectorAll('.pool-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.pool === key);
+    });
+
+    stage.innerHTML = '<p class="hint">点击下方按钮开始祈愿</p>';
+    updateUI();
+  }
+
   /* ================= 交互 ================= */
 
   function doPull(n) {
@@ -563,40 +734,39 @@
     setBusy(true);
 
     const results = [];
-    for (let i = 0; i < n; i++) results.push(pullOne());
+    for (let i = 0; i < n; i++) results.push(pullOne(current));
 
     render(results);
-    updateStats();
+    updateUI();
 
     if (results.some(r => r.rarity === 5)) flash();
 
     setTimeout(() => setBusy(false), n * 80 + 450);
   }
 
-  function reset() {
+  function resetCurrentPool() {
     if (busy) return;
-    if (!confirm('确定要清空所有抽卡记录吗？')) return;
 
-    state.total = 0;
-    state.pity5 = 0;
-    state.pity4 = 0;
-    state.guarantee5 = false;
-    state.guarantee4 = false;
-    state.count5 = 0;
-    state.count5up = 0;
-    state.count5std = 0;
-    state.count4 = 0;
-    state.count3 = 0;
+    const label = POOL_INFO[current].label;
+    if (!confirm('确定要清空【' + label + '】卡池的抽卡记录吗？\n（共享保底进度不会重置）')) return;
 
+    pools[current] = newPoolState();
     stage.innerHTML = '<p class="hint">点击下方按钮开始祈愿</p>';
-    updateStats();
+    updateUI();
   }
+
+  // 事件绑定
+  $('poolSelect').addEventListener('click', e => {
+    const tab = e.target.closest('.pool-tab');
+    if (tab) switchPool(tab.dataset.pool);
+  });
 
   $('pull1').addEventListener('click', () => doPull(1));
   $('pull10').addEventListener('click', () => doPull(10));
-  $('reset').addEventListener('click', reset);
+  $('reset').addEventListener('click', resetCurrentPool);
 
-  updateStats();
+  // 初始化
+  updateUI();
 })();
 </script>
 </body>
